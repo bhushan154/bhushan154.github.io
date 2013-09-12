@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css" media="screen" />   
+	<style type="text/css">
+		body { padding-bottom: 70px; }
+	</style>
+    <title>Jiradev.com: Your guide to Jira Plugin Development</title>
+  </head>
+
+  <body>
+	
+		<nav class="navbar navbar-inverse" role="navigation">
+				<div class="navbar-header"><a class="navbar-brand" href="index.html">Jiradev.com</a></div>
+				
+				<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="tutorials.html">Tutorials</a></li>
+					<li><a href="aboutme.html">About me</a></li>					
+				</ul>
+				</div>
+			</nav>
+	
+	
+    <div class="container">
+      <div class="row">
+		<div class="col-md-12">
+        <div class="page-header"><h4>Atlassian SDK Installation</h4></div>
+			<div><p><b>Operating Systems</b>: The Atlassian SDK is available for various operating systems. 
+			In Jiradev.com, I have only provided examples for installation and development on Windows 8.
+			The installation procedure for all operating systems are very well documented on the 
+			<a href="https://developer.atlassian.com/display/DOCS/Set+up+the+Atlassian+Plugin+SDK+and+Build+a+Project">Atlassian 
+			Developer</a> site. You should easily be able to install the SDK using the guides provided by Atlassian.</p>
+			</div>
+			<div>
+			<p>
+			<b>Pre-requisites</b>
+			<ul>
+				<li>
+					Make sure you have Java JDK installed. You can check to see if you have 
+					JDK installed by running the command "java -version" in a command prompt. 
+					If you do not see the output displayed in the screenshot below, 
+					you can download the Java SE JDK from here.<br /><br />
+					<img class="img-thumbnail" src="images/lesson1/java-version.png"/><br /><br />
+				</li>
+				<li>Make sure you have the JAVA_HOME environment variable set. You can verify this
+				by running the command "echo %JAVA_HOME% in a command prompt. You should see an output
+				similar	to the one in the below screenshot. If you don't refer <a href="#env_var">Setting JAVA_HOME environment variable</a>.<br /><br />
+					<img class="img-thumbnail" src="images/lesson1/hava-home.png"/><br /><br />
+				</li>
+			</ul>
+			</p>
+			</div>
+			
+			<div>
+				<h4>Installing the Atlassian SDK</h4>
+				<ol>
+					<li>Download the latest setup file from <a href="https://marketplace.atlassian.com/download/plugins/atlassian-plugin-sdk-windows">here</a>.</li>
+					<li>Run the downloaded setup file. Choose a language and click "Ok".<br /><br />
+					<img class="img-thumbnail" src="images/lesson1/language.png"/><br /><br /></li>
+					<li>On the welcome screen, observe the version number of the SDK. In the below screen shot, it is version 4.2.7.
+					I prefer installing the Atlassian SDK in a folder named after it's version number. At this point, create a 
+					folder where you would like to install the SDK. I have created a folder C:\atlassian\sdk\4.2.7<br /><br />
+					<img class="img-thumbnail" src="images/lesson1/welcome.png"/><br /><br /></li>
+					<li>Choose the directory you just created as the installation directory.<br /><br />
+					<img class="img-thumbnail" src="images/lesson1/directory.png"/><br /><br /></li>
+					<li>Follow the prompts to complete the setup and restart the system.</li>
+				</ol>
+			</div>
+			
+			<div id="env_var">
+				<h4>Setting JAVA_HOME environment variable</h4>
+				<ol>
+					<li>Open a file explorer and right click on "Computer" and select "Properties".</li>
+					<li>The System window opens up. Select "Advanced System Properties" and then select "Environment Variables".<br /><br />
+					<img class="img-thumbnail" src="images/lesson1/system.png"/><br /><br /><br /><br />
+					<img class="img-thumbnail" src="images/lesson1/environment.png"/><br /><br /></li>
+					<li>Click on "New" to create a new user variable named JAVA_HOME. Set the variable name to "JAVA_HOME" and 
+						variable value to your Java installation directory. Click "OK".<br /><br />
+					<img class="img-thumbnail" src="images/lesson1/new-user-variable.png"/><br /><br /><br /><br />
+					<img class="img-thumbnail" src="images/lesson1/java-home.png"/><br /><br /></li>
+					<li>Now look for the system variable named Path and choose to edit the path. At the end of the variable
+					value, enter the text <span class="text-danger"><b>;%JAVA_HOME%\bin</b></span> 
+					(notice the semi-colon) and click OK.<br /><br />
+					<img class="img-thumbnail" src="images/lesson1/path-edit1.png"/><br /><br /><br /><br />
+					<img class="img-thumbnail" src="images/lesson1/path-edit2.png"/><br /><br /></li>
+					<li>Open a new command prompt and run the command "echo %JAVA_HOME%" and you should be seeing the desired output.</li>
+				</ol>
+			</div>
+			
+		</div>
+	  </div>
+    </div>
+
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+		<div class="row">
+			<div class="col-md-12">
+				<p class="text-center">For more information about Jira Plugin Development and Training, contact <a mailto:"bhushan154@gmail.com">Bhushan Nagaraj</a></p>
+			</div>
+		</div>
+	</nav>
+  </body>
+</html>
