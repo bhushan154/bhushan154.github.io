@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css" media="screen" />   
+	<style type="text/css">
+		body { padding-bottom: 70px; }
+	</style>
+    <title>Jiradev.com: Your guide to Jira Plugin Development</title>
+  </head>
+
+  <body>
+	
+		<nav class="navbar navbar-inverse" role="navigation">
+				<div class="navbar-header"><a class="navbar-brand" href="index.html">Jiradev.com</a></div>
+				
+				<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="tutorials.html">Tutorials</a></li>
+					<li><a href="aboutme.html">About me</a></li>					
+				</ul>
+				</div>
+			</nav>
+	
+	
+    <div class="container">
+      <div class="row">
+		<div class="col-md-12">
+        <div class="page-header"><h4>Web-section plugin module</h4></div>
+			
+			<p>In the previous tutorial, we created a web-item to provide a link to Atlassian Answers site for users logged into JIRA.
+			What if we have multiple links, that we want displayed under different sections. For example, we want to provide a "Help" dropdown,
+			with two sections. Internal and External. Internal section will have a link that redirects to our company help website, while 
+			the external displays the Atlassian Answers link we created earlier.</p>
+			
+			<p>Take a look at the screenshot below. You will see that we have a total of 3 web-items and 2 web-sections.<br /><br />
+			<img class="img-thumbnail" src="images/lesson5/whatswhat.png"/>
+			</p>
+			<p>
+				<ol>
+					<li>
+						Let us start be creating a plugin skeleton with the following information.
+						<div class="alert alert-info">
+							<p>groupId: com.jiradev.jira.plugins</p>
+							<p>artifactId: jiradev-web-section</p>
+							<p>version: 1.0</p>				
+						</div>						
+					</li>
+					<li>
+						Open the project in your IDE and open up the atlassian-plugin.xml file. We will clean up the file keeping only
+						the i18N properties file.<br /><br />
+						<img class="img-thumbnail" src="images/lesson5/clean-atlassian-plugin.png"/>
+					</li>
+					<li>In this tutorial, we will add 3 web-item and 2 web-section modules at once. Run the atlas-create-jira-plugin-module command
+					and enter the following info.
+						<p>First add the main Help web-item</p>
+						<div class="alert alert-info">
+							<p>Select 25 for the web-item option</p>
+							<p>Plugin module name: Jiradev Help Menu</p>
+							<p>Enter section: system.top.navigation.bar</p>
+							<p>Enter link url: default.jspa (we will not be using this)</p>
+							<p>Show advanced setup: N</p>
+							<p>Add another plugin module: Y</p>
+						</div>
+						<p>Add the Internal Help web section</p>
+						<div class="alert alert-info">
+							<p>Select 30 for web-section</p>
+							<p>Plugin module name: Internal Help Web Section</p>
+							<p>Enter location: jiradev-helpmenu-link (This will be the key of the main Help web-item appended by <b>-link</b>)</p>							
+							<p>Show advanced setup: N</p>
+							<p>Add another plugin module: Y</p>
+						</div>
+						<p>Add the Company Help web-item</p>
+						<div class="alert alert-info">
+							<p>Select 25 for Web-item</p>
+							<p>Plugin module name: Company Help Link</p>
+							<p>Enter section: jiradev-helpmenu-link/internal-help-web-section (this is the link id of the main Help web-item/key of the internal help web section)</p>
+							<p>Enter link url: http://www.jiradev.com/aboutme.html</p>							
+							<p>Show advanced setup: N</p>
+							<p>Add another plugin module: Y</p>
+						</div>
+						<p>Add the External Help web section</p>
+						<div class="alert alert-info">
+							<p>Select 30 for web-section</p>
+							<p>Plugin module name: External Help Web Section</p>
+							<p>Enter location: jiradev-helpmenu-link (This will be the key of the main Help web-item appended by <b>-link</b>)</p>							
+							<p>Show advanced setup: N</p>
+							<p>Add another plugin module: Y</p>
+						</div>
+						<p>Add the Atlassian Answers web-item</p>
+						<div class="alert alert-info">
+							<p>Select 25 for Web-item</p>
+							<p>Plugin module name: Atlassian Answers Link</p>
+							<p>Enter section: jiradev-helpmenu-link/external-help-web-section (this is the link id of the main Help web-item/key of the external help web section)</p>
+							<p>Enter link url: https://answers.atlassian.com/</p>							
+							<p>Show advanced setup: N</p>
+							<p>Add another plugin module: N</p>
+						</div>
+					</li>
+					<li>Have a look at the atlassian-plugin.xml file. You will see that the SDK has added 5 new modules.</li>
+					<li>
+						Run the plugin using the atlas-run command.
+					</li>
+				</ol>
+			</p>
+			
+			<p>Woohoo. You now know about web-sections. 2 modules down. A lot more fun stuff ahead.</p>
+			
+		</div>
+	  </div>
+    </div>
+
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+		<div class="row">
+			<div class="col-md-12">
+				<p class="text-center">For more information about Jira Plugin Development and Training, contact <a href="mailto:bhushan154@gmail.com">Bhushan Nagaraj</a></p>
+			</div>
+		</div>
+	</nav>
+  </body>
+</html>
