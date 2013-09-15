@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css" media="screen" />  
+	<link rel="icon" type="image/x-icon" href="favicon.ico">	
+	<style type="text/css">
+		body { padding-bottom: 70px; padding-top: 70px;}
+		.socials {padding-top: 15px;} 
+	</style>
+    <title>Jiradev.com: Your guide to Jira Plugin Development</title>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>	
+  </head>
+
+  <body>
+	
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="navbar-header"><a class="navbar-brand" href="index.html">Jiradev.com</a></div>
+				
+				<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="tutorials.html">Tutorials</a></li>
+					<li><a href="aboutme.html">About me</a></li>					
+				</ul>
+				<ul class="nav navbar-nav pull-right">
+					<li class="socials"><a href="https://twitter.com/share" class="twitter-share-button" data-url="www.jiradev.com" data-text="Check out jiradev.com. It's got simple tutorials for devs new to Jira Development" data-via="jiradev" data-hashtags="JIRA,atlassian">Tweet</a></li>					
+				</ul>
+				</div>
+			</nav>
+	
+	
+    <div class="container">
+      <div class="row">
+		<div class="col-md-12">
+        <div class="page-header"><h4>Issue Tab Plugin Module</h4></div>
+		
+			<p><b>Requirement</b>: Display a list of users associated with different roles of the project in an issue tab panel</p>
+			
+			<p>When developing plugins for a particular instance of JIRA, say for example for a particular company, it is easier to
+			maintain the plugins if we deploy all the different modules as a single plugin. We are going to continue with the existing code
+			we have from the <a href="project-tab-panel.html">user-role-project-tab plugin</a>.</p>
+			
+			
+			<ol>
+				<li>Open the user-role-project-tab project in your IDE.</p>
+				<li>In command prompt, create a new plugin module using the command atlas-create-jira-plugin-module
+					<div class="alert alert-info">
+						<ul>
+							<li>Choose option 8 for Issue Tab Panel</li>
+							<li>Enter new class name: UserRoleIssueTabPanel</li>							
+							<li>Enter package name: com.jiradev.jira.plugins.panels.issue (notice the similarity in package name from user-role-project-tab plugin)</li>							
+							<li>Show advanced setup: N</li>
+							<li>Add another plugin module: N</li>
+						</ul>
+					</div>
+				</li>
+				<li>Take a look at the atlassian-plugin.xml file. You will see a new issue-tabpanel definition. You will also notice that there are two new 
+				files available in your project. UserRoleIssueTabPanel.java and user-role-issue-tab-panel.vm.</li>
+				<li>Let us start by modifying the code for the java class.
+					<div class="alert alert-danger">
+						If your class is still using import com.opensymphony.user.User which is deprecated, replace with 
+						import com.atlassian.crowd.embedded.api.User;
+					</div>
+<pre>
+package com.jiradev.jira.plugins.panels.issue;
+
+import com.atlassian.core.util.collection.EasyList;
+import com.atlassian.crowd.embedded.api.User;
+import com.atlassian.jira.plugin.issuetabpanel.IssueTabPanelModuleDescriptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.atlassian.jira.plugin.issuetabpanel.AbstractIssueTabPanel;
+import com.atlassian.jira.plugin.issuetabpanel.IssueTabPanel;
+import com.atlassian.jira.issue.tabpanels.GenericMessageAction;
+import com.atlassian.jira.issue.Issue;
+import java.util.Collections;
+import java.util.List;
+
+public class UserRoleIssueTabPanel extends AbstractIssueTabPanel
+{
+    private static final Logger log = LoggerFactory.getLogger(UserRoleIssueTabPanel.class);
+
+
+    public List getActions(Issue issue, User remoteUser) {
+        return EasyList.build(new UserRoleIssueAction(super.descriptor, issue.getProjectObject()));
+    }
+
+    public boolean showPanel(Issue issue, User remoteUser)
+    {
+        return true;
+    }
+}
+
+</pre>
+				</li>
+				<li><p>Notice that I have used a class called UserRoleIssueAction. This is a new class that I have written to populate the params map
+				with the collection of project roles and users. The code you will see in the getVelocityParams method is the same as the project tabpanel code.</p>
+				<p>Create a new class called UserRoleIssueAction that extends AbstractIssueAction in the package com.jiradev.jira.plugins.panels.issue</p>
+<pre>
+package com.jiradev.jira.plugins.panels.issue;
+
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.plugin.issuetabpanel.AbstractIssueAction;
+import com.atlassian.jira.plugin.issuetabpanel.IssueTabPanelModuleDescriptor;
+import com.atlassian.jira.project.Project;
+import com.atlassian.jira.security.roles.ProjectRole;
+import com.atlassian.jira.security.roles.ProjectRoleActors;
+import com.atlassian.jira.security.roles.ProjectRoleManager;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+import java.util.TreeMap;
+
+public class UserRoleIssueAction extends AbstractIssueAction {
+
+    private ProjectRoleManager projectRoleManager = ComponentAccessor.getComponent(ProjectRoleManager.class);
+    private TreeMap<String,Collection> people = new TreeMap<String,Collection>();
+    private Project project;
+
+    public UserRoleIssueAction(IssueTabPanelModuleDescriptor issueTabPanelModuleDescriptor, Project project){
+        super(issueTabPanelModuleDescriptor);
+        this.project = project;
+    }
+
+    public Date getTimePerformed(){
+        return null;
+    }
+
+    public void populateVelocityParams(Map params){
+        //Get all the project roles
+        Collection<ProjectRole> projectRoles = projectRoleManager.getProjectRoles();
+        //Iterate through each role and get the users associated with the role
+        for (ProjectRole projectRole : projectRoles){
+            ProjectRoleActors roleActors = projectRoleManager.getProjectRoleActors(projectRole, project);
+            people.put(projectRole.getName(),roleActors.getUsers());
+        }
+        params.put("people",people);
+        params.put("avatarService",ComponentAccessor.getAvatarService());
+    }
+}
+
+</pre>				
+				</li>
+				<li>The last part is the view. We can simply re-use all the code we wrote in user-role-project-tab-panel.vm file. You can also
+				change the definition of your issue-tabpanel to point to the same view as your project tabpanel. Try out both ways.</li>
+				<li>
+					Debug the project and step through the code. You should see a new issue tabpanel on your view issue screen.<br /><br />
+							<img class="img-thumbnail" src="images/lesson7/panel.png"/><br /><br />
+				</li>
+			</ol>
+			
+			<p>
+			If you found this tutorial helpful, please show your support by tweeting about this tutorial. 
+			<div><a href="https://twitter.com/intent/tweet?screen_name=jiradev&text=Woohoo.%20I%20completed%20the%20web-item%20tutorial%20on%20%40jiradev.%20%23atlassian%2C%20%23JIRA" class="twitter-mention-button" data-related="jiradev">Tweet to @jiradev</a></div>
+			</p>
+		</div>
+	  </div>
+    </div>
+
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+		<div class="row">
+			<div class="col-md-12">
+				<p class="text-center">For more information about Jira Plugin Development and Training, contact <a href="mailto:bhushan154@gmail.com">Bhushan Nagaraj</a></p>
+			</div>
+		</div>
+	</nav>
+  </body>
+</html>
