@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+	<link rel="icon" type="image/x-icon" href="favicon.ico">	
+    <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css" media="screen" />   
+	<style type="text/css">
+		body { padding-bottom: 70px; }
+		.socials {padding-top: 15px;} 
+	</style>
+    <title>Jiradev.com: Your guide to Jira Plugin Development</title>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </head>
+
+  <body>
+	
+		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+				<div class="navbar-header"><a class="navbar-brand" href="index.html">Jiradev.com</a></div>
+				
+				<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="tutorials.html">Tutorials</a></li>
+					<li><a href="aboutme.html">About me</a></li>					
+				</ul>
+				</div>
+			</nav>
+	
+	
+    <div class="container">
+      <div class="row">
+		<div class="col-md-12">
+        <div class="page-header"><h4>Project Tab Panel Plugin Module</h4></div>
+		
+		<p><b>Requirement</b>: Display a list of all the users on the project dashboard.</p>
+		
+		<p>
+			<ol>
+				<li>
+					Create a plugin skeleton and clean up the atlassian-plugin.xml file. Again, we only need the i18n resource module.
+					<div class="alert alert-info">
+						<ul>
+						<li>groupId: com.jiradev.jira.plugins</li>
+						<li>artifactId: user-role-project-tab</li>
+						<li>version: 1.0</li>
+						<li>Define value for package: com.jiradev.jira.plugins.panels.project ( this is the first time we are defining a value 
+						for a package. We are using this package because we are going to bundle another plugin within the same project in 
+						the next tutorial. You will know why when you go through the next tutorial)</li>
+						</ul>
+					</div>
+				</li>
+				<li>Run the atlas-create-jira-plugin-module command on the project
+					<div class="alert alert-info">
+						<ul>
+							<li>Use Generic Project Tab Panel: N (we need our own class to retrieve all users and implement the functionality we require)</li>
+							<li>Enter new class name: UserRoleProjectTabPanel</li>							
+							<li>Enter package name: com.jiradev.jira.plugins.panels.project</li>
+							<li>Show advanced setup: N</li>
+							<li>Add another plugin module: N</li>
+						<ul>
+					</div>
+				</li>
+				<li>
+					<p>Open the project in your IDE and take a look at the atlassian-plugin.xml file. Notice that the project-tabpanel has
+					a resource of type <a href="http://velocity.apache.org/">velocity</a> defined. This file is located in your project's resource/templates/tabpanels folder. Edit this
+					file and enter the text &lt;h1>Tweet for JIRADEV.com&lt;/h1></p>
+					<p>Also notice you src directory. The SDK has created 
+					a new java class named UserRoleProjectTabPanel.java in the package com.jiradev.jira.plugins.panels.project. This is where we will 
+					be writing code to implement our functionality.</p>
+				</li>
+				<li>
+					<p>Run JIRA using atlas-run command and create a demo project. Navigate to the project dashboard. And you should now see 
+					the output displayed in the below screenshot.<br /><br />
+							<img class="img-thumbnail" src="images/lesson6/tweet.png"/><br /><br /></p>
+				</li>
+				<li>Update the label property in resources/user-role-project-tab.properties files to "Roles".</li>
+				<li>Great. Let us start writing some code. Update the UserRoleProjectTabPanel.java file. We need to write code to get all the users 
+				in the project roles. Take a look at the API https://developer.atlassian.com/static/javadoc/jira/6.0.8/reference/com/atlassian/jira/plugin/projectpanel/impl/AbstractProjectTabPanel.html </li>
+				<li>Our UserRoleProjectTabPanel.java file already extends the AbstractProjectTabPanel class. We will implement the createVelocityParams method.
+				Below is the code for the UserRoleProjectTabPanel class. I have tried to add as many comments as possible to make it easier for you to understand.
+				<pre>
+package com.jiradev.jira.plugins.panels.project;
+
+import com.atlassian.crowd.embedded.api.User;
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.project.Project;
+import com.atlassian.jira.security.roles.ProjectRole;
+import com.atlassian.jira.security.roles.ProjectRoleActors;
+import com.atlassian.jira.security.roles.ProjectRoleManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.atlassian.jira.plugin.projectpanel.impl.AbstractProjectTabPanel;
+import com.atlassian.jira.plugin.projectpanel.ProjectTabPanel;
+import com.atlassian.jira.plugin.projectpanel.ProjectTabPanelModuleDescriptor;
+import com.atlassian.jira.project.browse.BrowseContext;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
+
+
+public class UserRoleProjectTabPanel extends AbstractProjectTabPanel implements ProjectTabPanel
+{
+    private static final Logger log = LoggerFactory.getLogger(UserRoleProjectTabPanel.class);
+    private ProjectRoleManager projectRoleManager = ComponentAccessor.getComponent(ProjectRoleManager.class);
+    private TreeMap<String,Collection> people = new TreeMap<String,Collection>();
+
+    public Map<String, Object> createVelocityParams (BrowseContext ctx)
+    {
+        //Get the params object. This will hold all the values that can be accessed in the user-role-project-tab.properties file
+        Map<String, Object> params = super.createVelocityParams(ctx);
+        //Get the project object
+        Project project = ctx.getProject();
+        //Get all the project roles
+        Collection<ProjectRole> projectRoles = projectRoleManager.getProjectRoles();
+        //Iterate through each role and get the users associated with the role
+        for (ProjectRole projectRole : projectRoles){
+            ProjectRoleActors roleActors = projectRoleManager.getProjectRoleActors(projectRole, project);
+            people.put(projectRole.getName(),roleActors.getUsers());
+        }
+        params.put("people",people);
+        params.put("avatarService",ComponentAccessor.getAvatarService());
+        return params;
+    }
+
+    public boolean showPanel(BrowseContext context)
+    {
+        return true;
+    }
+}
+
+				</pre>
+				</li>
+				<li>
+					Now that we have added all the required objects to the params map, we will have access to it in the velocity file. Let 
+					us update the view for the panel. Below is the code in the update-role-project-tab.vm file.
+<pre>
+&lt;div class="module">
+&lt;div class="mod-content">
+    &lt;table class="aui">
+    #foreach( $entry in $people.entrySet() )
+    #if($entry.getValue().size() > 0)
+        &lt;tr>
+            &lt;td>$entry.getKey()</td>
+            &lt;td>
+                &lt;table>
+                #foreach($user in $entry.getValue())
+                    &lt;tr>
+                        &lt;td>
+                            &lt;img height="48px" src="$avatarService.getAvatarAbsoluteURL($user,$user.getName(), $Avatar.Size.SMALL)"/>
+                        &lt;/td>
+                        &lt;td style="padding: 3px;">
+                            &lt;a href="${requestContext.baseUrl}/secure/ViewProfile.jspa?name=$user.getName()">$user.getDisplayName()&lt;/a>
+                            &lt;br />
+                            &lt;a href="mailto:$user.getEmailAddress()">$user.getEmailAddress()</a>
+                        &lt;/td>
+                    &lt;/tr>
+                #end
+                &lt;/table>
+            &lt;/td>
+        &lt;/tr>
+    #end
+    #end
+    &lt;/table>
+&lt;/div>
+&lt;/div>
+</pre>					
+				</li>
+			</ol>
+		</p>
+		
+		<p id="setup-debugger"><b>Debugging your project</b></p>
+		<p>
+			<ol>
+				<li>To debug your code, we need to run the plugin in debug mode. Stop the current instance of JIRA (Ctrl+C)</li>
+				<li>Run JIRA on debug mode using the command atlas-debug</li>
+				<li>Once JIRA has started, from your IntelliJ Idea IDE, select Run -> Edit Configurations from the top menu.</li>
+				<li>Click on the plus (+) icon and select "Remote".<br /><br />
+							<img class="img-thumbnail" src="images/lesson6/debugger1.png"/><br /><br />
+				
+				</li>
+				<li>Enter a name for your configuration and select Apply and click OK. You have the debugger setup. Add a breakpoint in
+				your UserRoleProjectTabPanel.java file within the createVelocityParams method. Start the debugger by clicking on the Debug icon.<br /><br />
+							<img class="img-thumbnail" src="images/lesson6/debugger-start.png"/><br /><br />
+				</li>
+				<li>Access your local instance of JIRA and navigate to the project dashboard. Your debugger will be activated. Step through the code
+				and understand what it is doing. Refer to the API for each classes used.</li>
+			</ol>
+		</p>
+		
+		<p>
+			Create a new user and associate him to a role in a project. You should see the list of users in your project tab panel now.<br /><br />
+							<img class="img-thumbnail" src="images/lesson6/roles.png"/><br /><br />
+		</p>
+		
+		<p>
+			Great. You have just completed writing a project tab panel plugin. In the next tutorial, we will implement the same 
+			functionality as a issue tab panel.			
+			</p>
+			<p>
+			If you found this tutorial helpful, please show your support by tweeting about this tutorial. 
+			<div><a href="https://twitter.com/intent/tweet?screen_name=jiradev&text=Woohoo.%20I%20completed%20the%20project%20tab%20panel%20tutorial%20on%20%40jiradev.%20%23atlassian%2C%20%23JIRA" class="twitter-mention-button" data-related="jiradev">Tweet to @jiradev</a></div>
+			</p>
+		
+		
+		</div>
+	  </div>
+    </div>
+
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+		<div class="row">
+			<div class="col-md-12">
+				<p class="text-center">For more information about Jira Plugin Development and Training, contact <a href="mailto:bhushan154@gmail.com">Bhushan Nagaraj</a></p>
+			</div>
+		</div>
+	</nav>
+  </body>
+</html>
