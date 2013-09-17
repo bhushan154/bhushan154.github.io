@@ -35,9 +35,9 @@
     <div class="container">
       <div class="row">
 		<div class="col-md-12">
-        <div class="page-header"><h4>Workflow Condition Plugin</h4></div>
+        <div class="page-header"><h4>Workflow validator plugin module</h4></div>
 		
-		<p><b>Requirement:</b> Write a workflow condition to check if a selected custom field has the value set to Yes.</p>
+			<p><b>Requirement:</b> Write a workflow validator to check if a selected custom field has the value set to Yes.</p>
 		
 		<div class="alert alert-warning">There are already plugins that can perform this. I have just considered this as an example.</div>
 
@@ -48,7 +48,7 @@
 					<div class="alert alert-info">
 						<ul>
 							<li>groupId: com.jiradev.jira.plugins</li>
-							<li>artifactId: field-value-condition</li>
+							<li>artifactId: field-value-validator</li>
 							<li>version: 1.0</li>
 						</ul>
 					</div>
@@ -57,9 +57,9 @@
 					Cleanup the atlassian-plugin.xml. Then create a jira plugin module.
 					<div class="alert alert-info">
 						<ul>
-							<li>Select option 32 for workflow condition</li>
-							<li>Enter class name: FieldValueCondition</li>
-							<li>Enter package name: com.jiradev.jira.plugins.conditions</li>
+							<li>Select option 34 for workflow validator</li>
+							<li>Enter class name: FieldValueValidator</li>
+							<li>Enter package name: com.jiradev.jira.plugins.validators</li>
 							<li>Show advanced setup: N</li>							
 							<li>Add another plugin module: N</li>
 						</ul>
@@ -76,44 +76,40 @@
 					our logic and display content we want to display.
 					<div class="alert alert-info">
 						<ul>
-							<li>FieldValueCondition.java</li>
-							<li>FieldValueConditionFactory.java</li>
-							<li>field-value-condition-input.vm</li>
-							<li>field-value-condition-view.vm</li>
+							<li>FieldValueValidator.java</li>
+							<li>FieldValueValidatorFactory.java</li>
+							<li>field-value-validator-input.vm</li>
+							<li>field-value-validator-view.vm</li>
 						</ul>
 					</div>
 					</p>
 				</li>
 			</ol>
 		</p>
-		<hr />	
-		<p><h4>FieldValueConditionFactory.java</h4></p>
-
-		<p>In this class, we will basically write code to setup the workflow condition. The code we write here will pass all the custom fields to the 
-		view where we choose the custom field and the value required for the condition to pass.</p>
+		<hr />
+		
+		<h4>FieldValueValidatorFactory.java</h4>
+		
+		<p>Take a look at the code in the files here. You will see a lot of similarity between the code we wrote for the workflow condition and 
+		the workflow validator.</p>
+		
 <pre>
-package com.jiradev.jira.plugins.conditions;
+package com.jiradev.jira.plugins.validators;
 
 import com.atlassian.core.util.map.EasyMap;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.fields.CustomField;
-import com.atlassian.jira.plugin.workflow.AbstractWorkflowPluginFactory;
-import com.atlassian.jira.plugin.workflow.WorkflowPluginConditionFactory;
 import com.opensymphony.workflow.loader.AbstractDescriptor;
-import com.opensymphony.workflow.loader.ConditionDescriptor;
-
+import com.opensymphony.workflow.loader.ValidatorDescriptor;
+import com.atlassian.jira.plugin.workflow.WorkflowPluginValidatorFactory;
+import com.atlassian.jira.plugin.workflow.AbstractWorkflowPluginFactory;
 import java.util.Map;
 
-/*
-This is the factory class responsible for dealing with the UI for the post-function.
-This is typically where you put default values into the velocity context and where you store user input.
- */
-
-public class FieldValueConditionFactory extends AbstractWorkflowPluginFactory implements WorkflowPluginConditionFactory
+public class FieldValueValidatorFactory extends AbstractWorkflowPluginFactory implements WorkflowPluginValidatorFactory
 {
     protected void getVelocityParamsForInput(Map velocityParams)
     {
-        //Popluate the velocityParams object with all the custom fields
+        //the default message
         velocityParams.put("customFields", ComponentAccessor.getCustomFieldManager().getCustomFieldObjects());
     }
 
@@ -125,31 +121,31 @@ public class FieldValueConditionFactory extends AbstractWorkflowPluginFactory im
 
     protected void getVelocityParamsForView(Map velocityParams, AbstractDescriptor descriptor)
     {
-        if (!(descriptor instanceof ConditionDescriptor))
+        if (!(descriptor instanceof ValidatorDescriptor))
         {
-            throw new IllegalArgumentException("Descriptor must be a ConditionDescriptor.");
+            throw new IllegalArgumentException("Descriptor must be a ValidatorDescriptor.");
         }
 
-        ConditionDescriptor conditionDescriptor = (ConditionDescriptor) descriptor;
-        String customFieldId = conditionDescriptor.getArgs().get("selectedCustomField").toString();
+        ValidatorDescriptor validatorDescriptor = (ValidatorDescriptor) descriptor;
+        String customFieldId = validatorDescriptor.getArgs().get("selectedCustomField").toString();
         CustomField customField = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(customFieldId);
-        velocityParams.put("requiredValue", conditionDescriptor.getArgs().get("requiredValue"));
-        velocityParams.put("selectedCustomField", conditionDescriptor.getArgs().get("selectedCustomField"));
+        velocityParams.put("requiredValue", validatorDescriptor.getArgs().get("requiredValue"));
+        velocityParams.put("selectedCustomField", validatorDescriptor.getArgs().get("selectedCustomField"));
         velocityParams.put("selectedCustomFieldName", customField.getName());
     }
 
-    public Map getDescriptorParams(Map conditionParams)
+    public Map getDescriptorParams(Map validatorParams)
     {
         // Process The map
-        String requiredValue = extractSingleParam(conditionParams, "requiredValue");
-        String selectedCustomField = extractSingleParam(conditionParams, "selectedCustomField");
+        String requiredValue = extractSingleParam(validatorParams, "requiredValue");
+        String selectedCustomField = extractSingleParam(validatorParams, "selectedCustomField");
         return EasyMap.build("requiredValue", requiredValue,"selectedCustomField",selectedCustomField);
     }
 }
 </pre>	
 
 <hr />
-	<p><h4>field-value-condition-input.vm</h4></p>
+	<p><h4>field-value-validator-input.vm</h4></p>
 	<p>We will now setup the view where the user selects the custom field and enters a value that is required for the condition to pass.</p>
 <pre>
 &lt;tr>
@@ -180,66 +176,72 @@ public class FieldValueConditionFactory extends AbstractWorkflowPluginFactory im
 	
 	<p>The code above is responsible for rendering the below screenshot.</p>
 	
-	<div><img class="img-thumbnail" src="images/lesson8/input.png"/></div>
+	<div><img class="img-thumbnail" src="images/lesson9/input.png"/></div>
 <hr />	
-	<p><h4>field-value-condition-view.vm</h4></p>
+	<p><h4>field-value-validator-view.vm</h4></p>
 <pre>
 Custom field &lt;b>$selectedCustomFieldName&lt;/b> must have the value &lt;b>$requiredValue&lt;/b>
 </pre>	
 
 <p>The code above is responsible for rendering the below screenshot.</p>
 	
-	<div><img class="img-thumbnail" src="images/lesson8/view.png"/></div>
+	<div><img class="img-thumbnail" src="images/lesson9/view.png"/></div>
 
-<hr />	
-<p><h4>FieldValueCondition.java</h4></p>	
 
-	<p>This class will contain the code to check the value of issue custom field and check if it equals the value expected by the user.</p>
-	
+<hr />
+		<h4>FieldValueValidator.java</h4>
+
 <pre>
-package com.jiradev.jira.plugins.conditions;
+package com.jiradev.jira.plugins.validators;
 
 import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.issue.fields.CustomField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.workflow.condition.AbstractJiraCondition;
 import com.opensymphony.module.propertyset.PropertySet;
-
+import com.opensymphony.workflow.Validator;
+import com.opensymphony.workflow.InvalidInputException;
 import java.util.Map;
 
-public class FieldValueCondition extends AbstractJiraCondition
+public class FieldValueValidator implements Validator
 {
-    private static final Logger log = LoggerFactory.getLogger(FieldValueCondition.class);
-
-    public boolean passesCondition(Map transientVars, Map args, PropertySet ps)
+    public void validate(Map transientVars, Map args, PropertySet ps) throws InvalidInputException
     {
         String selectedCustomField = (String) args.get("selectedCustomField");
         String requiredValue = (String) args.get("requiredValue");
-        Issue issue = getIssue(transientVars);
-        Object value = issue.getCustomFieldValue(ComponentAccessor.getCustomFieldManager().getCustomFieldObject(selectedCustomField));
-        if(value!=null)
-            return value.toString().equals(requiredValue);
+        Issue issue = (Issue) transientVars.get("issue");
+        CustomField customField = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(selectedCustomField);
+        Object value = issue.getCustomFieldValue(customField);
+        if(value==null)
+        {
+            throw new InvalidInputException(ComponentAccessor.getCustomFieldManager().getCustomFieldObject(selectedCustomField).getName() + " must contain the value '" + requiredValue + "'.");
+        }
         else
-            return false;
+        {
+            if(!value.toString().equals(requiredValue))
+            {
+                throw new InvalidInputException(ComponentAccessor.getCustomFieldManager().getCustomFieldObject(selectedCustomField).getName() + " must contain the value '" + requiredValue + "'.");
+            }
+        }
     }
 }
-</pre>	
-	
-	<hr />
+</pre>
+
+		<hr />
 	<p><h4>Testing the plugin</h4></p>
 	
 	<p>
 		<ol>
-			<li>Create a text custom field, and a new workflow. In one of the transitions, add the Field Value Condition.<br /><br />
-							<img class="img-thumbnail" src="images/lesson8/condition.png"/><br /><br /></li>
+			<li>Create a text custom field, and a new workflow. In one of the transitions, add the Field Value validator.<br /><br />
+							<img class="img-thumbnail" src="images/lesson9/validator.png"/><br /><br /></li>
 			<li>In my example, I have a text field named <b>Analysis Complete?</b> and it has to contain the value <b>Yes</b>
 			in order to pass the condition.</li>
 			<li>Associate the workflow to a workflow scheme. Create a project that uses the workflow scheme.</li>
-			<li>Try out the workflow and debug the code and check if your condition is working.</li>
+			<li>Try out the workflow and debug the code and check if your validator is working.</li>
 		</ol>
 	</p>
-
+		
 		</div>
 	  </div>
     </div>
