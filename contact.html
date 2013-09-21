@@ -3,89 +3,57 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.index.min.css" media="screen" />  
+    <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css" media="screen" />  
 	<link rel="icon" type="image/x-icon" href="favicon4.ico">	
 	<style type="text/css">
-		body { padding-bottom: 70px; }
+		body { padding-bottom: 70px; padding-top: 70px;}
 		.socials {padding-top: 15px;} 
 	</style>
     <title>Jiradev.com: Your guide to Jira Plugin Development</title>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>	
   </head>
 
   <body>
 	
-		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 				<div class="navbar-header" style="padding-top: 5px;"><a  href="index.html"><img src="images/jiradevlogo.png" alt="Jiradev.com" max-height="40px"/></a></div>
-				 
+				
 				<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav">
 					<li><a href="tutorials.html">Tutorials</a></li>
-					<li><a href="aboutme.html">About me</a></li>
-					<li><a href="contact.html">Feedback/Contact</a></li>
+					<li><a href="aboutme.html">About me</a></li>	
+					<li class="active"><a href="contact.html">Feedback/Contact</a></li>
 				</ul>
-				
 				<ul class="nav navbar-nav pull-right">
 					<li class="socials"><a href="https://twitter.com/share" class="twitter-share-button" data-url="www.jiradev.com" data-text="Check out jiradev.com. It's got simple tutorials for devs new to Jira Development" data-via="jiradev" data-hashtags="JIRA,atlassian">Tweet</a></li>					
 				</ul>
 				</div>
-				
 			</nav>
-			
-		
-		<div class="container">
-			<div class="row">	
-				<div class="col-xs-4 col-sm-4 col-md-4">
-					<center>
-						<h2>What is Jiradev.com?</h2>
-					</center>
-					<hr />
-					<ul>
-						<li>A collection of tutorials for developers new to Atlassian JIRA plugin development.</li>
-						<li>Example based learning for developers with experience using/administering JIRA.</li>
-					</ul>
-				</div>
-				<div class="col-xs-4 col-sm-4 col-md-4">
-					<center>
-						<h2>Why use Jiradev.com?</h2>						
-					</center>
-					<hr />
-					<ul>
-						<li>Jiradev.com provides you with an introduction to all the different modules.</li>
-						<li>Takes you through all the JIRA plugin modules step-by-step.</li>
-					</ul>
-				</div>
-				<div class="col-xs-4 col-sm-4 col-md-4">
-					<center>
-						<h2>How to use Jiradev.com?</h2>
-					</center>
-					<hr />
-					<ul>
-						<li>New to JIRA development? Start from the first tutorial</li>
-						<li>If you are experienced and need to refer to a particular module, skip straight to it.</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		
-		
-    <div class="container" style="padding-top: 70px;">
+	
+	
+    <div class="container">
       <div class="row">
 		<div class="col-md-12">
-			<p class="text-center">
-				<a href="tutorials.html" class="btn btn-primary btn-lg">Get Started</a>
-			</p>
+        <div class="page-header"><h4>Feedback/Suggestions/Contact</h4></div>
+		
+		<!-- UserVoice JavaScript SDK (only needed once on a page) -->
+<script>(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/H4Msyrsib8lTi0nIUcNSPg.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})()</script>
+
+<!-- The Classic Widget will be embeded wherever this div is placed -->
+<div data-uv-inline="classic_widget" data-uv-mode="full" data-uv-primary-color="#d04337" data-uv-link-color="#d04337" data-uv-default-mode="support" data-uv-forum-id="223701" data-uv-support-tab_name="Contact" data-uv-width="100%" data-uv-height="550px"></div>
+			
 		</div>
 	  </div>
     </div>
 
-    <nav class="navbar navbar-default navbar-inverse navbar-fixed-bottom">
+    <nav class="navbar navbar-default navbar-fixed-bottom">
 		<div class="row">
 			<div class="col-md-12">
 				<p class="text-center">For more information about Jira Plugin Development and Training, contact <a href="mailto:bhushan154@gmail.com">Bhushan Nagaraj</a></p>
 			</div>
 		</div>
-	</nav>			
+	</nav>
   </body>
 </html>
