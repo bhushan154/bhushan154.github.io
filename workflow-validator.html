@@ -250,23 +250,36 @@ public class FieldValueValidator implements Validator
 	  <div class="row">
 		<div class="col-md-4">
 			<div class="alert alert-info">
+			<center>
 			<h4>Share</h4>
-				If you found this tutorial helpful, please show your support by tweeting about this tutorial. 
-				<div><a href="https://twitter.com/intent/tweet?screen_name=jiradev&text=Woohoo.%20I%20completed%20the%20atlassian-sdk%20installation%20tutorial%20on%20%40jiradev.%20%23atlassian%2C%20%23JIRA" class="twitter-mention-button" data-related="jiradev">Tweet to @jiradev</a></div>
+			<hr />
+			<p>
+				Show your support by tweeting about this tutorial. Is Jiradev something you would reommend? <a href="#" id="recommend">Let me know</a>.
+			</p>
+			<p>
+				<div><a class="btn btn-danger btn-sm" href="https://twitter.com/intent/tweet?screen_name=jiradev&text=Woohoo.%20I%20completed%20the%20atlassian-sdk%20installation%20tutorial%20on%20%40jiradev.%20%23atlassian%2C%20%23JIRA" data-related="jiradev">@jiradev</a></div>
+			</p>
+			</center>
 			</div>
 		</div>
 		<div class="col-md-4">
 			<div class="alert alert-info">
+			<center>
 				<h4>Contribute</h4>
-				Do you have a Jira plugin tutorial that can be used on this site? Please do share it with me and I can add it along with the ones available.
-				Refer to the article on <a href="http://jiradev.uservoice.com/knowledgebase/articles/255497">how to contribute</a>.
+				<hr />
+				<p>Do you have a Jira plugin tutorial that can be used on this site? Please do share it with me and I can add it along with the ones available.
+				</p><p><a class="btn btn-danger btn-sm" href="http://jiradev.uservoice.com/knowledgebase/articles/255497">Contribute</a></p>
+			</center>
 			</div>
 		</div>
 		<div class="col-md-4">
 			<div class="alert alert-info">
+			<center>
 			<h4>Feedback</h4>
-				Your feedback can help improve the content on this site. If you have anything that you would like me to change/implement 
-				on the site, please <a href="#" id="feedback">provide your feedback</a>.
+			<hr />
+				<p>Your feedback can help improve the content on this site. If you have anything that you would like me to change/implement 
+				on the site.</p><p><div><a href="#" id="feedback" class="btn btn-danger btn-sm">Feedback</a></div></p>
+			</center>
 			</div>
 		</div>
 	  </div>
@@ -321,7 +334,7 @@ UserVoice.push(['identify', {
 UserVoice.push(['addTrigger', { mode: 'satisfaction', trigger_position: 'bottom-right' }]);
 
 // Or, use your own custom trigger:
-//UserVoice.push(['addTrigger', '#id', { mode: 'satisfaction' }]);
+UserVoice.push(['addTrigger', '#recommend', { mode: 'satisfaction' }]);
 
 // Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
 UserVoice.push(['autoprompt', {}]);
