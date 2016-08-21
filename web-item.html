@@ -64,7 +64,9 @@
         <div class="page-header"><h1>Web Item Plugin Module</h1></div>
 		
 			<p>Let us get started with probably the most simple of all plugin modules. The web item plugin module. This allows us to add 
-			links in different locations of the JIRA UI. We will add a link to the Atlassian Answers community page from two different locations.</p>
+			links in different locations of the JIRA UI. We will add a link to the Atlassian Answers community page from the top navigation bar.</p>
+
+			<p>Source code is available at <a href="https://bitbucket.org/jiradev-tutorials/web-item">https://bitbucket.org/jiradev-tutorials/web-item</a></p>
 			
 			<p><b>Adding a link to the top navigation bar</b></p>
 			<p>
@@ -117,13 +119,14 @@
 					<li>Take a look at the atlassian-plugin.xml file. When you ran the atlas-create-jira-plugin-module command, the SDK 
 					has created the definition of the web-item here for you.<br /><br />
 							<img class="img-thumbnail" src="images/lesson4/original-atlassian-plugin.png"/><br /><br /></li>
+					<!-- No longer need in 7.1.9
 					<li>You will also notice several other modules the atlas-create-jira-plugin command would have created as a sample. We do not
 					require all these modules to be published as part of our plugin. Let us clean it up and keep only what is required. We are 
 					interested only in the plugin-info, the i18N resource file and the web-item definition. 
 					Cleanup the atlassian-plugin.xml. Below is a cleaned up version.
 						<br /><br />
 							<img class="img-thumbnail" src="images/lesson4/clean-atlassian-plugin.png"/><br /><br />
-					</li>
+					</li>-->
 				</ol>
 			</p>
 			
@@ -140,32 +143,36 @@
 							<img class="img-thumbnail" src="images/lesson4/props.png"/><br /><br /></li>
 					<li>
 						Now let us add a condition such that the link is displayed only to logged in users. Open the atlassian-plugin.xml and 
-						add the condition. There are several conditions available. Click <a href="https://developer.atlassian.com/static/javadoc/jira/6.0.8/reference/com/atlassian/jira/plugin/webfragment/conditions/package-summary.html">here</a> to take a look.
+						add the condition. There are several conditions available. Click <a href="https://docs.atlassian.com/jira/latest/">here</a> to take a look at the Java API and look for "com.atlassian.jira.plugin.webfragment.conditions". For this example, we will be using the UserLoggedInCondition ie. com.atlassian.jira.plugin.webfragment.conditions.UserLoggedInCondition
 						<br /><br />
 							<img class="img-thumbnail" src="images/lesson4/condition.png"/><br /><br />
-					</li>					
+					</li>	
+					<li>
+						UserLoggedInCondition is part of jira-core which is commented by default in the pom.xml file. Uncomment the dependency.
+						<br /><br />
+							<img class="img-thumbnail" src="images/lesson4/jira-core.png"/><br /><br />
+					</li>
+					<li>
+						Explicitly import the com.atlassian.jira.plugin.webfragment.conditions package in maven-jira-plugin section of the pom.xml file.
+						For more information on why this is required, refer to <a href="https://bitbucket.org/atlassian/atlassian-spring-scanner">https://bitbucket.org/atlassian/atlassian-spring-scanner</a>. Look for the example with com.atlassian.jira.plugin.webfragment.conditions.
+						<br /><br />
+							<img class="img-thumbnail" src="images/lesson4/package-import.png"/><br /><br />
+					</li>								
 				</ol>
 			</p>
 			
 			<p><b>Reloading your changes</b></p>
-				<p>Once you have made changes to your plugin, you need to recompile and upload the plugin again. Atlassian SDK provides 
-					two ways of doing this. Through the UI using FastDev or through command line using the atlas-cli command.</p>
-				<p><u>Using Fastdev</u>				
-				<ol>
-					<li>On the bottom left corner of your running JIRA instance, you will find an option to expand the developer toolbar.<br /><br />
-							<img class="img-thumbnail" src="images/lesson4/dev-tool-1.png"/><br /><br />Click on it to view the developer toolbar.</li>
-					<li>On the right hand side of the developer toolbar, you will find the option to "Scan for changes to source code needing a recompile 
-					then reload" option. Click to recompile and reload.<br /><br />
-							<img class="img-thumbnail" src="images/lesson4/dev-tool-2.png"/><br /><br /></li>
-				</ol>
-				<p><u>Using command line</u>	
+				<p>Once you have made changes to your plugin, you need to recompile and upload the plugin again.</p>
+				
+				<p><u>Using Terminal</u>	
 				<ol>
 					<li>With the current command prompt where atlas-run is running being open, open a new instance of command prompt and
 					change to your project directory.</li>
 					<li>Run the atlas-cli command. When prompted with maven>, type "pi" and press enter. <br /><br />
 							<img class="img-thumbnail" src="images/lesson4/atlas-cli.png"/><br /><br /></li>
 				</ol>
-			</p>			
+			</p>	
+			<p>Try accessing JIRA. You will now be seeing the link only upon login.</p>		
 		</div>
 	  </div>
 	  
