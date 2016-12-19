@@ -63,6 +63,7 @@
 		<div class="col-md-12">
         <div class="page-header"><h1>Project Tab Panel Plugin Module</h1></div>
 		<p><b>Requirement</b>: Display a list of all the users on the project dashboard.</p>
+		<p>Source code available at <a href="https://bitbucket.org/jiradev-tutorials/project-tab-panel">https://bitbucket.org/jiradev-tutorials/project-tab-panel</a></p>
 		
 		<p>
 			<ol>
@@ -79,7 +80,7 @@
 						</ul>
 					</div></p>
 				</li>
-				<li>Run the atlas-create-jira-plugin-module command on the project
+				<li>Run the atlas-create-jira-plugin-module command on the project. Select option 13 for Project Tab Panel module.
 					<p><div class="alert alert-info">
 						<ul>
 							<li>Use Generic Project Tab Panel: N (we need our own class to retrieve all users and implement the functionality we require)</li>
@@ -103,7 +104,7 @@
 					the output displayed in the below screenshot.<br /><br />
 							<img class="img-thumbnail" src="images/lesson6/tweet.png"/><br /><br /></p>
 				</li>
-				<li>Update the label property in resources/user-role-project-tab.properties files to "Roles".</li>
+				<li>Update the user-role-project-tab-panel.label property in resources/user-role-project-tab.properties files to "Roles".</li>
 				<li>Great. Let us start writing some code. Update the UserRoleProjectTabPanel.java file. We need to write code to get all the users 
 				in the project roles. Take a look at the API https://developer.atlassian.com/static/javadoc/jira/6.0.8/reference/com/atlassian/jira/plugin/projectpanel/impl/AbstractProjectTabPanel.html </li>
 				<li>Our UserRoleProjectTabPanel.java file already extends the AbstractProjectTabPanel class. We will implement the createVelocityParams method.
@@ -163,7 +164,7 @@ public class UserRoleProjectTabPanel extends AbstractProjectTabPanel implements 
 				</li>
 				<li>
 					Now that we have added all the required objects to the params map, we will have access to it in the velocity file. Let 
-					us update the view for the panel. Below is the code in the update-role-project-tab.vm file.
+					us update the view for the panel. Below is the code in the update-role-project-tab-panel.vm file.
 <pre>
 &lt;div class="module">
 &lt;div class="mod-content">
