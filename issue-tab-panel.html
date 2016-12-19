@@ -64,6 +64,8 @@
         <div class="page-header"><h1>Issue Tab Plugin Module</h1></div>
 		
 			<p><b>Requirement</b>: Display a list of users associated with different roles of the project in an issue tab panel</p>
+
+			<p>Source code available at <a href="https://bitbucket.org/jiradev-tutorials/project-tab-panel">https://bitbucket.org/jiradev-tutorials/project-tab-panel</a></p>
 			
 			<p>When developing plugins for a particular instance of JIRA, say for example for a particular company, it is easier to
 			maintain the plugins if we deploy all the different modules as a single plugin. We are going to continue with the existing code
@@ -88,13 +90,13 @@
 				<li>Let us start by modifying the code for the java class.
 					<div class="alert alert-danger">
 						If your class is still using import com.opensymphony.user.User which is deprecated, replace with 
-						import com.atlassian.crowd.embedded.api.User;
+						import com.atlassian.jira.user.ApplicationUser;;
 					</div>
 <pre>
 package com.jiradev.jira.plugins.panels.issue;
 
 import com.atlassian.core.util.collection.EasyList;
-import com.atlassian.crowd.embedded.api.User;
+import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.plugin.issuetabpanel.IssueTabPanelModuleDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,11 +112,11 @@ public class UserRoleIssueTabPanel extends AbstractIssueTabPanel
     private static final Logger log = LoggerFactory.getLogger(UserRoleIssueTabPanel.class);
 
 
-    public List getActions(Issue issue, User remoteUser) {
+    public List getActions(Issue issue, ApplicationUser remoteUser) {
         return EasyList.build(new UserRoleIssueAction(super.descriptor, issue.getProjectObject()));
     }
 
-    public boolean showPanel(Issue issue, User remoteUser)
+    public boolean showPanel(Issue issue, ApplicationUser remoteUser)
     {
         return true;
     }
