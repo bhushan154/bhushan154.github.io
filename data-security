@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+	<meta name="description" content="Atlassian Jira Plugin Development Tutorials">
+	<meta name="keywords" content="jiradev, jira, plugins, bhushan154, tutorials, jira, jira training india, jira training">
+	<meta name="author" content="Bhushan Nagaraj">
+    
+    <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css" media="screen" />  
+	<link rel="icon" type="image/x-icon" href="favicon4.ico">	
+	<style type="text/css">
+		body { padding-bottom: 70px; padding-top: 70px;}
+		.socials {padding-top: 15px; padding-right: 15px; }  
+	</style>
+    <title>Jiradev.com: Your guide to Jira Plugin Development</title>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>	
+	
+	<!-- Analytics -->
+	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-44222850-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	
+  </head>
+
+  <body>
+	
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="navbar-header" style="padding-top: 5px;"><a  href="index.html"><img src="images/jiradevlogo.png" alt="Jiradev.com" max-height="40px"/></a></div>
+				
+				<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="tutorials.html">Tutorials</a></li>
+					<li><a href="aboutme.html">About me</a></li>
+					<li><a href="http://blog.jiradev.com" target="_blank">Blog</a></li>
+					<li><a href="contact.html">Feedback/Contact</a></li>					
+				</ul>
+				<ul class="nav navbar-nav pull-right">
+					<li class="socials"><a href="https://twitter.com/share" class="twitter-share-button" data-url="www.jiradev.com" data-text="Check out jiradev.com. It's got simple tutorials for devs new to Jira Development" data-via="jiradev" data-count="none" data-hashtags="JIRA,atlassian">Tweet</a></li>					
+				</ul>
+				</div>
+			</nav>
+	
+	
+    <div class="container">
+      <div class="row">
+		<div class="col-md-12">
+        <div class="page-header"><h1>Data Security</h1></div>
+		<p>We currently only develop apps for Atlassian Server and Data Center products. Any data saved by the app,
+    will be stored on your own databases as configured in your Jira instance.
+    We do not collect, store or share any other data.
+    </p>
+				
+		
+		</div>
+	  </div>
+	  
+	  <hr />
+	  <div class="row">
+		<div class="col-md-4">
+			<div class="alert alert-info">
+			<center>
+			<h4>Share</h4>
+			<hr />
+			<p>
+				Show your support by tweeting about this tutorial. Is Jiradev something you would reommend? <a href="#" id="recommend">Let me know</a>.
+			</p>
+			<p>
+				<div><a class="btn btn-danger btn-sm" href="https://twitter.com/intent/tweet?screen_name=jiradev&text=Woohoo.%20I%20completed%20the%20atlassian-sdk%20installation%20tutorial%20on%20%40jiradev.%20%23atlassian%2C%20%23JIRA" data-related="jiradev">@jiradev</a></div>
+			</p>
+			</center>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="alert alert-info">
+			<center>
+				<h4>Contribute</h4>
+				<hr />
+				<p>Do you have a Jira plugin tutorial that can be used on this site? Please do share it with me and I can add it along with the ones available.
+				</p><p><a class="btn btn-danger btn-sm" href="http://jiradev.uservoice.com/knowledgebase/articles/255497">Contribute</a></p>
+			</center>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="alert alert-info">
+			<center>
+			<h4>Feedback</h4>
+			<hr />
+				<p>Your feedback can help improve the content on this site. If you have anything that you would like me to change/implement 
+				on the site.</p><p><div><a href="#" id="feedback" class="btn btn-danger btn-sm">Feedback</a></div></p>
+			</center>
+			</div>
+		</div>
+	  </div>
+	  
+    </div>
+
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+		<div class="row">
+			<div class="col-md-12">
+				<p class="text-center">For more information about Jira Plugin Development and Training, contact <a href="mailto:bhushan154@gmail.com">Bhushan Nagaraj</a></p>
+			</div>
+		</div>
+	</nav>
+	
+	<!-- Satisfaction rating -->
+	<script>
+// Include the UserVoice JavaScript SDK (only needed once on a page)
+UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/H4Msyrsib8lTi0nIUcNSPg.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+
+//
+// UserVoice Javascript SDK developer documentation:
+// https://www.uservoice.com/o/javascript-sdk
+//
+
+// Set colors
+UserVoice.push(['set', {
+  accent_color: '#e23a39',
+  trigger_color: 'white',
+  trigger_background_color: 'rgba(46, 49, 51, 0.6)'
+}]);
+
+// Identify the user and pass traits
+// To enable, replace sample data with actual user traits and uncomment the line
+UserVoice.push(['identify', {
+  //email:      'john.doe@example.com', // User’s email address
+  //name:       'John Doe', // User’s real name
+  //created_at: 1364406966, // Unix timestamp for the date the user signed up
+  //id:         123, // Optional: Unique id of the user (if set, this should not change)
+  //type:       'Owner', // Optional: segment your users by type
+  //account: {
+  //  id:           123, // Optional: associate multiple users with a single account
+  //  name:         'Acme, Co.', // Account name
+  //  created_at:   1364406966, // Unix timestamp for the date the account was created
+  //  monthly_rate: 9.99, // Decimal; monthly rate of the account
+  //  ltv:          1495.00, // Decimal; lifetime value of the account
+  //  plan:         'Enhanced' // Plan name for the account
+  //}
+}]);
+
+// Add default trigger to the bottom-right corner of the window:
+UserVoice.push(['addTrigger', { mode: 'satisfaction', trigger_position: 'bottom-right' }]);
+
+// Or, use your own custom trigger:
+UserVoice.push(['addTrigger', '#recommend', { mode: 'satisfaction' }]);
+
+// Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
+UserVoice.push(['autoprompt', {}]);
+</script>
+
+<!-- Feedback -->
+<script>
+// Include the UserVoice JavaScript SDK (only needed once on a page)
+UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/H4Msyrsib8lTi0nIUcNSPg.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+
+//
+// UserVoice Javascript SDK developer documentation:
+// https://www.uservoice.com/o/javascript-sdk
+//
+
+// Set colors
+UserVoice.push(['set', {
+  accent_color: '#e23a39',
+  trigger_color: 'white',
+  trigger_background_color: 'rgba(46, 49, 51, 0.6)'
+}]);
+
+// Identify the user and pass traits
+// To enable, replace sample data with actual user traits and uncomment the line
+UserVoice.push(['identify', {
+  //email:      'john.doe@example.com', // User’s email address
+  //name:       'John Doe', // User’s real name
+  //created_at: 1364406966, // Unix timestamp for the date the user signed up
+  //id:         123, // Optional: Unique id of the user (if set, this should not change)
+  //type:       'Owner', // Optional: segment your users by type
+  //account: {
+  //  id:           123, // Optional: associate multiple users with a single account
+  //  name:         'Acme, Co.', // Account name
+  //  created_at:   1364406966, // Unix timestamp for the date the account was created
+  //  monthly_rate: 9.99, // Decimal; monthly rate of the account
+  //  ltv:          1495.00, // Decimal; lifetime value of the account
+  //  plan:         'Enhanced' // Plan name for the account
+  //}
+}]);
+
+// Add default trigger to the bottom-right corner of the window:
+//UserVoice.push(['addTrigger', { mode: 'smartvote', trigger_position: 'bottom-right' }]);
+
+// Or, use your own custom trigger:
+UserVoice.push(['addTrigger', '#feedback', { mode: 'smartvote' }]);
+
+// Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
+UserVoice.push(['autoprompt', {}]);
+</script>
+	
+  </body>
+</html>
